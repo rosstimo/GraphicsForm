@@ -22,19 +22,60 @@ Partial Class GraphicsForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.ColorDialog = New System.Windows.Forms.ColorDialog()
+        Me.ContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ChooseColorContextMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ClearConextMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PictureBox = New System.Windows.Forms.PictureBox()
+        Me.ContextMenuStrip.SuspendLayout()
+        CType(Me.PictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'ContextMenuStrip
+        '
+        Me.ContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ChooseColorContextMenuItem, Me.ClearConextMenuItem})
+        Me.ContextMenuStrip.Name = "ContextMenuStrip"
+        Me.ContextMenuStrip.Size = New System.Drawing.Size(147, 48)
+        '
+        'ChooseColorContextMenuItem
+        '
+        Me.ChooseColorContextMenuItem.Name = "ChooseColorContextMenuItem"
+        Me.ChooseColorContextMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.ChooseColorContextMenuItem.Text = "&Choose Color"
+        '
+        'ClearConextMenuItem
+        '
+        Me.ClearConextMenuItem.Name = "ClearConextMenuItem"
+        Me.ClearConextMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.ClearConextMenuItem.Text = "C&lear"
+        '
+        'PictureBox
+        '
+        Me.PictureBox.ContextMenuStrip = Me.ContextMenuStrip
+        Me.PictureBox.Location = New System.Drawing.Point(12, 12)
+        Me.PictureBox.Name = "PictureBox"
+        Me.PictureBox.Size = New System.Drawing.Size(776, 369)
+        Me.PictureBox.TabIndex = 1
+        Me.PictureBox.TabStop = False
         '
         'GraphicsForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.PictureBox)
         Me.Name = "GraphicsForm"
         Me.Text = "Form1"
+        Me.ContextMenuStrip.ResumeLayout(False)
+        CType(Me.PictureBox, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
 
     Friend WithEvents ColorDialog As ColorDialog
+    Friend WithEvents ContextMenuStrip As ContextMenuStrip
+    Friend WithEvents ChooseColorContextMenuItem As ToolStripMenuItem
+    Friend WithEvents ClearConextMenuItem As ToolStripMenuItem
+    Friend WithEvents PictureBox As PictureBox
 End Class
