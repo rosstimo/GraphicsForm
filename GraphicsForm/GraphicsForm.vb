@@ -15,7 +15,15 @@
         g.Dispose()
         myPen.Dispose()
     End Sub
+    Sub DrawLineSegment(x1%, y1%, x2%, y2%)
+        Dim g As Graphics = Me.CreateGraphics
+        Dim myPen = New Pen(Me.currentColor)
 
+        g.DrawLine(myPen, x1, y1, x2, y2)
+
+        myPen.Dispose()
+        g.Dispose()
+    End Sub
     ' event handlers
 
     Private Sub GraphicsForm_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -23,22 +31,25 @@
     End Sub
 
     Private Sub GraphicsForm_Click(sender As Object, e As EventArgs) Handles Me.Click
-        testDraw()
+        'testDraw()
     End Sub
 
     Private Sub GraphicsForm_MouseMove(sender As Object, e As MouseEventArgs) Handles Me.MouseMove, Me.MouseDown
+        Static lastX%, lastY%
         Select Case e.Button.ToString
 
-            Case "Left"
 
+            Case "Left"
+                DrawLineSegment(lastX, lastY, e.X, e.Y)
             Case "Right"
 
             Case "Middle"
                 ColorDialog.ShowDialog()
                 Me.currentColor = ColorDialog.Color
         End Select
-        Me.Text = $"({e.X},{e.Y}) button: {e.Button.ToString} Color: {Me.currentColor}"
-
+        Me.Text = $"({e.X},{e.Y}) button: {e.Button.ToString} Color: {Me.currentColor.ToString}"
+        lastX = e.X
+        lastY = e.Y
 
     End Sub
 End Class
