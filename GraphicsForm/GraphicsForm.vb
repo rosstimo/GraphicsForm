@@ -34,6 +34,23 @@
         'PictureBox.BackColor = Color.White
     End Sub
 
+    Sub DrawGraph()
+        Dim bottomEdge As Integer = PictureBox.Height
+        Dim rightEdge As Integer = PictureBox.Width
+        Dim hSpace As Integer = PictureBox.Width \ 10
+        Dim vspace As Integer = PictureBox.Height \ 8
+
+        For i = hSpace To PictureBox.Width Step hSpace
+
+            DrawLineSegment(i, 0, i, bottomEdge)
+        Next
+        For i = vspace To PictureBox.Height Step vspace
+
+            DrawLineSegment(0, i, rightEdge, i)
+        Next
+
+    End Sub
+
     ' event handlers
 
     Private Sub GraphicsForm_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -42,6 +59,7 @@
 
     Private Sub GraphicsForm_Click(sender As Object, e As EventArgs) Handles Me.Click
         'testDraw()
+        DrawGraph()
     End Sub
 
     Private Sub PictureBox_MouseMove(sender As Object, e As MouseEventArgs) Handles PictureBox.MouseMove, PictureBox.MouseDown

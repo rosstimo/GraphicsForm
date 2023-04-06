@@ -52,7 +52,13 @@ Partial Class GraphicsForm
         '
         'PictureBox
         '
+        Me.PictureBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox.BackColor = System.Drawing.SystemColors.InactiveBorder
+        Me.PictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.PictureBox.ContextMenuStrip = Me.ContextMenuStrip
+        Me.PictureBox.Cursor = System.Windows.Forms.Cursors.Cross
         Me.PictureBox.Location = New System.Drawing.Point(12, 12)
         Me.PictureBox.Name = "PictureBox"
         Me.PictureBox.Size = New System.Drawing.Size(776, 369)
@@ -66,6 +72,7 @@ Partial Class GraphicsForm
         Me.ClientSize = New System.Drawing.Size(800, 450)
         Me.Controls.Add(Me.PictureBox)
         Me.Name = "GraphicsForm"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Form1"
         Me.ContextMenuStrip.ResumeLayout(False)
         CType(Me.PictureBox, System.ComponentModel.ISupportInitialize).EndInit()
