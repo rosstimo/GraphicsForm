@@ -30,7 +30,40 @@ Public Class GraphicsForm
         g.Dispose()
     End Sub
 
+
+
+    Sub UpdateColor()
+        ColorDialog.ShowDialog()
+        Me.currentColor = ColorDialog.Color
+    End Sub
+    Sub Clear()
+        PictureBox.Refresh()
+        shake()
+        'PictureBox.BackColor = Color.White
+    End Sub
+
+    Sub DrawGraph()
+        Dim oldColor As Color = Me.currentColor
+        Me.currentColor = Color.DarkSlateGray
+        Dim bottomEdge As Integer = PictureBox.Height
+        Dim rightEdge As Integer = PictureBox.Width
+        Dim hSpace As Integer = PictureBox.Width \ 10
+        Dim vspace As Integer = PictureBox.Height \ 8
+
+        For i = hSpace To PictureBox.Width Step hSpace
+
+            DrawLineSegment(i, 0, i, bottomEdge)
+        Next
+        For i = vspace To PictureBox.Height Step vspace
+
+            DrawLineSegment(0, i, rightEdge, i)
+        Next
+        Me.currentColor = oldColor
+    End Sub
+
     Sub drawSinWave()
+        Dim oldColor As Color = Me.currentColor
+        Me.currentColor = Color.Red
         'vi = Vp * sin((360 * f * t) + theta) + DC
         'vi = Vp * sin(n * theta)
         'where Vp is peak, n is the current x multiple
@@ -38,7 +71,7 @@ Public Class GraphicsForm
 
         Dim vmax# = ((PictureBox.Height - 5) \ 2) 'absolute distance from zero
         Dim yOffset# = vmax  'push the wave down to center
-        Dim lastX%, lastY%, currentY%, currentX%
+        Dim lastX% = -1, lastY% = CInt(yOffset), currentY%, currentX%
         Dim angle#
 
         'plot one cycle that spans the entire picture box
@@ -53,34 +86,61 @@ Public Class GraphicsForm
             lastX = currentX
             lastY = currentY
         Next
-
+        Me.currentColor = oldColor
     End Sub
+    Sub drawCosWave()
+        Dim oldColor As Color = Me.currentColor
+        Me.currentColor = Color.Blue
+        'vi = Vp * sin((360 * f * t) + theta) + DC
+        'vi = Vp * sin(n * theta)
+        'where Vp is peak, n is the current x multiple
+        'theta cycle width divided by 360 degrees
 
-    Sub UpdateColor()
-        ColorDialog.ShowDialog()
-        Me.currentColor = ColorDialog.Color
-    End Sub
-    Sub Clear()
-        PictureBox.Refresh()
-        shake()
-        'PictureBox.BackColor = Color.White
-    End Sub
+        Dim vmax# = ((PictureBox.Height - 5) \ 2) 'absolute distance from zero
+        Dim yOffset# = vmax  'push the wave down to center
+        Dim lastX% = -1, lastY% = CInt(yOffset), currentY%, currentX%
+        Dim angle#
 
-    Sub DrawGraph()
-        Dim bottomEdge As Integer = PictureBox.Height
-        Dim rightEdge As Integer = PictureBox.Width
-        Dim hSpace As Integer = PictureBox.Width \ 10
-        Dim vspace As Integer = PictureBox.Height \ 8
-
-        For i = hSpace To PictureBox.Width Step hSpace
-
-            DrawLineSegment(i, 0, i, bottomEdge)
+        'plot one cycle that spans the entire picture box
+        For x = 0 To CInt(PictureBox.Width) Step PictureBox.Width / 360
+            angle = (Math.PI / 180) * x 'degrees to radians
+            'surround the entire expression with the integer conversion
+            'losing too much precision converting the small value terms
+            currentY = CInt(-1 * vmax * Math.Cos(angle) + yOffset)
+            currentX = CInt(x * PictureBox.Width / 360)
+            DrawLineSegment(lastX, lastY, currentX, currentY)
+            'current end point becomes next start point
+            lastX = currentX
+            lastY = currentY
         Next
-        For i = vspace To PictureBox.Height Step vspace
+        Me.currentColor = oldColor
+    End Sub
+    Sub drawTanWave()
+        Dim oldColor As Color = Me.currentColor
+        Me.currentColor = Color.Green
+        'vi = Vp * sin((360 * f * t) + theta) + DC
+        'vi = Vp * sin(n * theta)
+        'where Vp is peak, n is the current x multiple
+        'theta cycle width divided by 360 degrees
 
-            DrawLineSegment(0, i, rightEdge, i)
+        Dim vmax# = ((PictureBox.Height - 5) \ 2) 'absolute distance from zero
+        Dim yOffset# = vmax  'push the wave down to center
+        Dim lastX% = -1, lastY% = CInt(yOffset), currentY%, currentX%
+        Dim angle#
+
+        'plot one cycle that spans the entire picture box
+        For x = 0 To CInt(PictureBox.Width) Step PictureBox.Width / 360
+            angle = (Math.PI / 180) * x 'degrees to radians
+            'surround the entire expression with the integer conversion
+            'losing too much precision converting the small value terms
+            currentY = CInt(-1 * vmax * Math.Tan(angle) + yOffset)
+            currentX = CInt(x * PictureBox.Width / 360)
+            DrawLineSegment(lastX, lastY, currentX, currentY)
+            'current end point becomes next start point
+            lastX = currentX
+            lastY = currentY
         Next
-
+        Me.currentColor = oldColor
     End Sub
     Sub shake()
         'Me.Top
@@ -105,13 +165,16 @@ Public Class GraphicsForm
     ' event handlers
 
     Private Sub GraphicsForm_Load(sender As Object, e As EventArgs) Handles Me.Load
-        currentColor = Color.Black
+        currentColor = Color.White
     End Sub
 
     Private Sub GraphicsForm_Click(sender As Object, e As EventArgs) Handles Me.Click
         'testDraw()
-        'DrawGraph()
+        DrawGraph()
         drawSinWave()
+        drawCosWave()
+        drawTanWave()
+
     End Sub
 
     Private Sub PictureBox_MouseMove(sender As Object, e As MouseEventArgs) Handles PictureBox.MouseMove, PictureBox.MouseDown
@@ -133,5 +196,9 @@ Public Class GraphicsForm
 
     Private Sub ClearConextMenuItem_Click(sender As Object, e As EventArgs) Handles ClearConextMenuItem.Click
         Clear()
+    End Sub
+
+    Private Sub PictureBox_SizeChanged(sender As Object, e As EventArgs) Handles PictureBox.SizeChanged
+        PictureBox.Refresh()
     End Sub
 End Class
