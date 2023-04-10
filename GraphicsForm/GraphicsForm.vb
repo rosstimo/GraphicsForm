@@ -36,24 +36,23 @@ Public Class GraphicsForm
         'where Vp is peak, n is the current x multiple
         'theta cycle width divided by 360 degrees
 
-        Dim vmax# = PictureBox.Height / 2
+        Dim vmax# = ((PictureBox.Height - 5) \ 2) 'absolute distance from zero
         Dim yOffset# = vmax  'push the wave down to center
         Dim lastX%, lastY%, currentY%, currentX%
         Dim angle#
 
         'plot one cycle that spans the entire picture box
-        For x = 0 To CInt(PictureBox.Height) Step PictureBox.Width / 360
+        For x = 0 To CInt(PictureBox.Width) Step PictureBox.Width / 360
             angle = (Math.PI / 180) * x 'degrees to radians
             'surround the entire expression with the integer conversion
             'losing too much precision converting the small value terms
-            currentY = CInt(vmax * Math.Sin(angle) + yOffset)
+            currentY = CInt(-1 * vmax * Math.Sin(angle) + yOffset)
             currentX = CInt(x * PictureBox.Width / 360)
             DrawLineSegment(lastX, lastY, currentX, currentY)
             'current end point becomes next start point
             lastX = currentX
             lastY = currentY
         Next
-
 
     End Sub
 
