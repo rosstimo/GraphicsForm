@@ -34,22 +34,22 @@ Public Class GraphicsForm
         'vi = Vp * sin((360 * f * t) + theta) + DC
         'vi = Vp * sin(n * theta)
         'where Vp is peak, n is the current x multiple
-        ' theta cycle width divided by 360 degrees
+        'theta cycle width divided by 360 degrees
 
-        Dim vmax% = 100 ' PictureBox.Height \ 2
-        Dim yOffset% = vmax
-        Dim theta% = PictureBox.Width \ 360
+        Dim vmax# = PictureBox.Height / 2
+        Dim yOffset# = vmax  'push the wave down to center
         Dim lastX%, lastY%, currentY%, currentX%
         Dim angle#
 
-        For n = 0 To 360
-            'n = 90
-            angle = (Math.PI / 180) * n * theta
-
-            ' currentY = vmax * CInt(Math.Sin((Math.PI\180) * n)) + yOffset
-            currentY = CInt(100 * Math.Sin(angle)) + 100
-            currentX = n
+        'plot one cycle that spans the entire picture box
+        For x = 0 To CInt(PictureBox.Height) Step PictureBox.Width / 360
+            angle = (Math.PI / 180) * x 'degrees to radians
+            'surround the entire expression with the integer conversion
+            'losing too much precision converting the small value terms
+            currentY = CInt(vmax * Math.Sin(angle) + yOffset)
+            currentX = CInt(x * PictureBox.Width / 360)
             DrawLineSegment(lastX, lastY, currentX, currentY)
+            'current end point becomes next start point
             lastX = currentX
             lastY = currentY
         Next
