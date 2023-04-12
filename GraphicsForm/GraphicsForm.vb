@@ -133,12 +133,20 @@ Public Class GraphicsForm
             angle = (Math.PI / 180) * x 'degrees to radians
             'surround the entire expression with the integer conversion
             'losing too much precision converting the small value terms
-            currentY = CInt(-1 * vmax * Math.Tan(angle) + yOffset)
-            currentX = CInt(x * PictureBox.Width / 360)
-            DrawLineSegment(lastX, lastY, currentX, currentY)
-            'current end point becomes next start point
+            Try
+                currentY = CInt(-1 * vmax * Math.Tan(angle) + yOffset)
+                currentX = CInt(x * PictureBox.Width / 360)
+                DrawLineSegment(lastX, lastY, currentX, currentY)
+                'current end point becomes next start point
+                'y won't update if exception thrown
+                lastY = currentY
+            Catch ex As Exception
+                'if Tan function tries to go to infinite or otherwise
+                'overflows the currentY integer variable skip this point.
+                'could also simply not update y if outside the bounds of the picture box.
+            End Try
+            'update x every time
             lastX = currentX
-            lastY = currentY
         Next
         Me.currentColor = oldColor
     End Sub
@@ -164,11 +172,11 @@ Public Class GraphicsForm
     End Sub
     ' event handlers
 
-    Private Sub GraphicsForm_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Sub GraphicsForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         currentColor = Color.White
     End Sub
 
-    Private Sub GraphicsForm_Click(sender As Object, e As EventArgs) Handles Me.Click
+    Private Sub GraphicsForm_Click(sender As Object, e As EventArgs) Handles MyBase.Click
         'testDraw()
         DrawGraph()
         drawSinWave()
